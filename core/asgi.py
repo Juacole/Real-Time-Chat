@@ -1,4 +1,5 @@
 import os
+import django
 
 '''asgi.py es un piunto de entrada para servidores asincronos de Django, que permite manejar conexiones WebSocket y otros protocolos asíncronos.
 - Configura el entorno Django para que pueda ser utilizado por ASGI.'''
@@ -6,13 +7,11 @@ import os
 # Configuracion del entorno Django
 # Establece la variable de entorno DJANGO_SETTINGS_MODULE para que Django sepa dónde encontrar la configuración del proyecto.
 # En este caso, se asume que el archivo de configuración se llama 'settings.py'
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-import django
-
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat.settings')
 django.setup()
 
-from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
 from django.core.asgi import get_asgi_application
 from .routing import websocket_urlpatterns
 
@@ -24,6 +23,7 @@ from .routing import websocket_urlpatterns
 '''
 application = ProtocolTypeRouter(
     {
+        "http": get_asgi_application(),  # <-- Esto enruta las solicitudes HTTP normales
         'websocket': AuthMiddlewareStack(
             URLRouter(websocket_urlpatterns)
         ),
