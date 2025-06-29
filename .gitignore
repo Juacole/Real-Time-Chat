@@ -1,0 +1,37 @@
+mysql/
+!mysql/*.cnf
+!mysql/*.index
+!mysql/*.lock
+!mysql/*.cnf
+!mysql/*.ib*
+*.sock
+
+# Entornos virtuales
+venv/
+.env/
+.venv/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Archivos de configuración de VS Code
+.vscode/
+
+# Archivos de base de datos SQLite (por si acaso)
+*.sqlite3
+
+# Archivos de logs
+*.log
+
+# Archivos temporales y de sistema
+*.pid
+.DS_Store
+Thumbs.db
+
+# Archivos de pruebas y cobertura
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+.cache/
