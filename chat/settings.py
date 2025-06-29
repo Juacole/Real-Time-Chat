@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'chat.wsgi.application'
+#WSGI_APPLICATION = 'chat.wsgi.application'
 
 
 # Database
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'chat.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'chat_app',
         'USER': 'cple',
         'PASSWORD': 'EldtoloHacebien74',
@@ -145,4 +145,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ASGI application
-ASGI_APPLICATION = "asgi.application"
+ASGI_APPLICATION = "core.asgi.application"
