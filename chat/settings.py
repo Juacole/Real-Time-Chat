@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels', # Soporte para WebSockets
     'core', # Aplicación principal del proyecto
-    'chat', # Aplicación de chat
+    'chats', # Aplicación de chats
 ]
 
 MIDDLEWARE = [
