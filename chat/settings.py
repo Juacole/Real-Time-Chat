@@ -145,4 +145,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ASGI application
+# Se redifine la ruta correcta, agregando core al incio
 ASGI_APPLICATION = "core.asgi.application"
