@@ -12,7 +12,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"] 
         
         # Creamos el nombre del grupo de la sala
-        self.room_group_name = "chat_&s" % self.room_name
+        self.room_group_name = "chat_%s" % self.room_name
         
         # Se une a la sala
         # Se agrega el canal del cliente al grupo de la sala, permitiendo que reciba mensajes enviados a ese grupo
