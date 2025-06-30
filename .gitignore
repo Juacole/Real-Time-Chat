@@ -35,3 +35,18 @@ htmlcov/
 .tox/
 .pytest_cache/
 .cache/
+
+# Python
+__pycache__/
+*.pyc
+
+# Django
+db.sqlite3
+.env
+
+# Node/Tailwind
+node_modules/
+static/output.css
+
+# Otros
+npm-debug.log
