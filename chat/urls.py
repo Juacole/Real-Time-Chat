@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),  # Vista hacia la página principal
     path('chats/', include('chats.urls')),  # Vista hacia la página principal de chats
-    path('', include('login.urls')),  # Vista hacia la página de inicio de sesión
+    path('login/', include('login.urls')),  # Vista hacia la página de inicio de sesión
+    path('register/', include('register.urls')),  # Vista hacia la página de registro
 ]
