@@ -17,9 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from chats import views
+from chats import views as chats_views
+from core import views as core_views
+from login import views as login_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.chats, name='chats'),  # Vista hacia la página principal de chats
+    path('', include('core.urls')),  # Vista hacia la página principal
+    path('chats/', include('chats.urls')),  # Vista hacia la página principal de chats
+    path('', include('login.urls')),  # Vista hacia la página de inicio de sesión
 ]
