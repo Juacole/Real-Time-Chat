@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'channels', # Soporte para WebSockets
     'core', # Aplicación principal del proyecto
     'chats', # Aplicación de chats
+    'login', # Aplicación de inicio de sesión
+    'register' # Aplicación de registro de usuarios
 ]
 
 MIDDLEWARE = [
@@ -139,6 +141,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/#staticfilesdirs
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -146,4 +155,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ASGI application
 # Se redifine la ruta correcta, agregando core al incio
-ASGI_APPLICATION = "core.asgi.application"
+ASGI_APPLICATION = "chat.asgi.application"
