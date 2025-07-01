@@ -17,9 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from chats import views as chats_views
-from core import views as core_views
-from login import views as login_views
+from django.conf import settings 
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,3 +27,7 @@ urlpatterns = [
     path('login/', include('login.urls')),  # Vista hacia la página de inicio de sesión
     path('register/', include('register.urls')),  # Vista hacia la página de registro
 ]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
