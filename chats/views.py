@@ -1,5 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 # Create your views here.
+@login_required(login_url='login') 
 def chats(request):
-    return render(request, 'chats/chat.html')
+    return render(request, 'chats/chats.html')
