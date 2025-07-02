@@ -16,14 +16,16 @@
             <div class="flex justify-between items-center py-3">
                 <!-- Logo/lado izquierdo -->
                 <div class="flex items-center">
-                    <span class="font-semibold text-xl tracking-tight">WhatsApp 2</span>
+                    <a href="{% url 'base' %}" class="font-semibold text-xl tracking-tight">WhatsApp 2</a>
                 </div>
 
                 <!-- Menú/lado derecho -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="#"
-                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition duration-300">Inicio</a>
-                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium bg-green-700">Registrar</a>
+                    <a href="{% url 'login' %}"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition duration-300">Iniciar
+                        Sesión</a>
+                    <a href="{% url 'register' %}"
+                        class="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition duration-300">Registrar</a>
                 </div>
             </div>
         </div>
