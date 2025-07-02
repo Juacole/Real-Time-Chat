@@ -50,3 +50,7 @@ static/output.css
 
 # Otros
 npm-debug.log
+
+# Ignorar cachés de Python dentro de migrations
+**/migrations/__pycache__/
+**/migrations/*.pyc
