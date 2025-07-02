@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth.views import logout_then_login
 
 from django.conf import settings 
 
@@ -26,6 +27,7 @@ urlpatterns = [
     path('chats/', include('chats.urls')),  # Vista hacia la página principal de chats
     path('login/', include('login.urls')),  # Vista hacia la página de inicio de sesión
     path('register/', include('register.urls')),  # Vista hacia la página de registro
+    path('logout/', logout_then_login, name='logout'),  # Vista hacia la página de cierre de sesión
 ]
 
 if settings.DEBUG:
