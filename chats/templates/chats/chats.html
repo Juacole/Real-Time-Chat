@@ -25,7 +25,7 @@
             <button type="submit"
               class="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition duration-300">Cerrar
               Sesión</button>
-          </form> 
+          </form>
         </div>
       </div>
     </div>
@@ -37,9 +37,9 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <!-- Sidebar -->
         <aside class="md:col-span-1 bg-white rounded-lg shadow p-4">
-          <label class="block mb-2 text-gray-700 font-semibold">Nombre</label>
-          <input id="nombre" type="text" placeholder="{{ user.username }}"
-            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300" />
+          <!--<label class="block mb-2 text-gray-700 font-semibold">Nombre</label>-->
+          <input id="nombre" type="hidden" value="{{ user.username }}" class=" w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring
+            focus:border-blue-300" />
         </aside>
 
         <!-- Chat Main -->
