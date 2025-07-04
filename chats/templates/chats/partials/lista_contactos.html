@@ -1,0 +1,18 @@
+<ul class="space-y-2">
+    {% for contacto in contactos %}
+    <li>
+        <button class="w-full text-left p-2 rounded hover:bg-gray-100 flex items-center contacto-btn"
+            data-user-id="{{ contacto.id }}" data-username="{{ contacto.username }}">
+            <span class="bg-gray-300 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                {{ contacto.username|first|upper }}
+            </span>
+            {{ contacto.username }}
+            {% if contacto.tiene_conversacion %}
+            <span class="ml-auto text-xs text-green-500">●</span>
+            {% endif %}
+        </button>
+    </li>
+    {% empty %}
+    <li class="text-gray-500 p-2">No hay contactos disponibles</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,11 @@
+{% for mensaje in mensajes %}
+<div class="{% if mensaje.sender.id == usuario_actual.id %}text-right ml-12{% else %}mr-12{% endif %} mb-3">
+    <div
+        class="{% if mensaje.sender.id == usuario_actual.id %}bg-blue-500 text-white{% else %}bg-gray-200{% endif %} rounded-lg p-3 inline-block">
+        <p>{{ mensaje.content }}</p>
+        <span class="text-xs opacity-70 block mt-1">
+            {{ mensaje.timestamp|time:"H:i" }}
+        </span>
+    </div>
+</div>
+{% endfor %}
