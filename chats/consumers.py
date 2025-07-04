@@ -1,69 +1,80 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
+from login.models import User
+from .models import Conversation, Message
 
-class ChatConsumer(AsyncWebsocketConsumer):
-    
+class PrivateChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        '''Cliente se conecta al WebSocket'''
+        if not self.scope["user"].is_authenticated:
+            await self.close()
+            return
+
+        self.user = self.scope["user"]
+        self.other_user_id = self.scope['url_route']['kwargs']['user_id']
         
-        # Recogemos el nombre de la sala
-        # Obtiene el nombre de la sala desde la URL
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"] 
-        
-        # Creamos el nombre del grupo de la sala
-        self.room_group_name = "chat_%s" % self.room_name
-        
-        # Se une a la sala
-        # Se agrega el canal del cliente al grupo de la sala, permitiendo que reciba mensajes enviados a ese grupo
+        if not await self.user_exists(self.other_user_id):
+            await self.close()
+            return
+
+        self.conversation = await self.get_or_create_conversation()
+        self.room_group_name = f'private_chat_{self.conversation.id}'
+
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
         
-        # Se informa al cliente que se ha conectado
         await self.accept()
-        
-    # Si el cliente se desconecta, se ejecuta este método eliminando el canal del grupo de la sala    
+
     async def disconnect(self, close_code):
-        '''Cliente se desconecta del WebSocket'''
-        
-        # Se sale de la sala
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
-        
+        if hasattr(self, 'room_group_name'):
+            await self.channel_layer.group_discard(
+                self.room_group_name,
+                self.channel_name
+            )
+
     async def receive(self, text_data):
-        '''Cliente enviar informacion y nosotros la recibimos'''
+        text_data_json = json.loads(text_data)
+        message_content = text_data_json['message']
         
-        text_data_json = json.loads(text_data) # Convierte el texto recibido en formato JSON a un diccionario
+        message = await self.save_message(message_content)
         
-        # Extraemos el nombre y el texto del mensaje
-        name = text_data_json["name"]
-        text = text_data_json["text"]
-        
-        # Envía el mensaje a todos los miembros del grupo de la sala, llamando al método chat_message en cada consumidor del grupo.
-        # Esto permite que todos los clientes conectados a la sala reciban el mensaje.
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                "type": "chat_message",
-                "name": name,
-                "text": text
-            },
+                'type': 'chat_message',
+                'message': message_content,
+                'sender_id': self.user.id,
+                'sender_username': self.user.username,
+                'timestamp': str(message.timestamp),
+                'message_id': message.id
+            }
         )
-    
-    # Este método es llamado automáticamente cuando se recibe un mensaje del grupo y se encarga de enviar el mensaje al WebSocket del cliente.
+
     async def chat_message(self, event):
-        '''Recibimos informacion de la sala'''
-        
-        name = event["name"]
-        text = event["text"]
-        
-        # Se envia mensaje al WebSocket
         await self.send(text_data=json.dumps({
-            "type": "chat_message",
-            "name": name,
-            "text": text
+            'type': 'chat_message',
+            'message': event['message'],
+            'sender_id': event['sender_id'],
+            'sender_username': event['sender_username'],
+            'timestamp': event['timestamp'],
+            'message_id': event['message_id']
         }))
+
+    @database_sync_to_async
+    def user_exists(self, user_id):
+        return User.objects.filter(id=user_id).exists()
+
+    @database_sync_to_async
+    def get_or_create_conversation(self):
+        other_user = User.objects.get(id=self.other_user_id)
+        return Conversation.objects.get_or_create_for_users(self.user, other_user)[0]
+
+    @database_sync_to_async
+    def save_message(self, content):
+        return Message.objects.create(
+            conversation=self.conversation,
+            sender=self.user,
+            content=content
+        )
