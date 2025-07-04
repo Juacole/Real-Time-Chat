@@ -7,19 +7,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WhatsApp</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.6"></script>
 </head>
 
 <body>
   <nav class="bg-green-600 text-white shadow-lg">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center py-3">
-        <!-- Logo/lado izquierdo -->
         <div class="flex items-center">
           <a href="{% url 'base' %}" class="font-semibold text-xl tracking-tight">WhatsApp 2</a>
         </div>
 
-        <!-- Menú/lado derecho -->
         <div class="hidden md:flex items-center space-x-4">
+          <span class="px-3 py-2">Hola, {{ user.username }}</span>
           <form action="{% url 'logout' %}" method="post" style="display:inline;">
             {% csrf_token %}
             <button type="submit"
@@ -35,22 +35,31 @@
     <div class="w-full max-w-5xl p-6">
       <h1 class="text-3xl font-bold text-center mb-6 text-green-400">WhatsApp 2</h1>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <!-- Sidebar -->
         <aside class="md:col-span-1 bg-white rounded-lg shadow p-4">
-          <!--<label class="block mb-2 text-gray-700 font-semibold">Nombre</label>-->
-          <input id="nombre" type="hidden" value="{{ user.username }}" class=" w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring
-            focus:border-blue-300" />
+          <h2 class="font-bold mb-3">Contactos</h2>
+          <div id="contactos-container" hx-get="{% url 'obtener_contactos' %}" hx-trigger="load">
+            <div class="text-center py-4">
+              <span class="animate-spin">⚙️</span> Cargando contactos...
+            </div>
+          </div>
         </aside>
 
-        <!-- Chat Main -->
         <main class="md:col-span-3 bg-white rounded-lg shadow p-4 flex flex-col h-[70vh]">
-          <!-- Mensajes -->
-          <section id="mensajes"
-            class="flex-1 overflow-y-auto space-y-3 mb-4 border border-gray-200 rounded p-3 bg-gray-50"></section>
+          <div id="cabecera-chat" class="border-b pb-2 mb-2">
+            <h2 id="nombre-contacto" class="font-bold">Seleccione un contacto</h2>
+          </div>
 
-          <!-- Enviar mensajes -->
-          <section class="flex gap-2">
-            <input id="texto" type="text" placeholder="Nuevo mensaje..."
+          <section id="mensajes"
+            class="flex-1 overflow-y-auto space-y-3 mb-4 border border-gray-200 rounded p-3 bg-gray-50">
+            <div id="mensajes-container">
+              <div class="text-center py-8 text-gray-500">
+                Seleccione un contacto para comenzar a chatear
+              </div>
+            </div>
+          </section>
+
+          <section id="seccion-enviar" class="flex gap-2 hidden">
+            <input id="texto" type="text" placeholder="Escribe un mensaje..."
               class="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300" />
             <button id="enviar" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
               Enviar
@@ -61,7 +70,11 @@
     </div>
   </div>
 
-  <!-- JS externo -->
+  <script>
+    const USUARIO_ACTUAL_ID = "{{ user.id }}";
+    const USUARIO_ACTUAL_USERNAME = "{{ user.username }}";
+  </script>
+
   <script src="{% static 'chats/js/main.js' %}"></script>
 </body>
 
