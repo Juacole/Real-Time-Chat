@@ -1,84 +1,90 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WhatsApp</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-</head>
-
-<body class="bg-gray-100">
-  <nav class="bg-green-600 text-white">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-3">
-        <div class="flex items-center">
-          <a href="{% url 'base' %}" class="font-semibold text-xl tracking-tight">WhatsApp 2</a>
-        </div>
-
-        <div class="hidden md:flex items-center space-x-4">
-          <span class="font-semibold text-sm tracking-tight px-3 py-2">Hola, {{ user.username }}</span>
-          <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit"
-              class="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition duration-300">Cerrar
-              Sesión</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="flex h-[calc(100vh-65px)]">
-    <div class="w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col">
-      <div class="p-3 bg-gray-50">
-        <h2 class="font-bold text-gray-700">Contactos</h2>
-      </div>
-      <div id="contactos-container" hx-get="{% url 'obtener_contactos' %}" hx-trigger="load"
-        class="flex-1 overflow-y-auto">
-        <div class="text-center py-4">
-          <span class="animate-spin">⚙️</span> Cargando contactos...
-        </div>
-      </div>
-    </div>
-
-    <div class="hidden md:flex md:w-2/3 flex-col bg-gray-50">
-      <div id="cabecera-chat" class="p-3 bg-gray-50 border-b border-gray-200">
-        <h2 id="nombre-contacto" class="font-bold text-gray-700">Seleccione un contacto</h2>
-      </div>
-
-      <section id="mensajes" class="flex-1 overflow-y-auto p-4 bg-gray-100">
-        <div id="mensajes-container" class="space-y-2">
-          <div class="text-center py-8 text-gray-500">
-            Seleccione un contacto para comenzar a chatear
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="Aplicación de chat en tiempo real estilo WhatsApp">
+    <meta name="keywords"
+          content="chat, tiempo real, django, websocket, mensajería">
+    <title>WhatsApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-green-600 text-white">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-3">
+          <div class="flex items-center">
+            <a href="{% url 'base' %}" class="font-semibold text-xl tracking-tight">WhatsApp 2</a>
+          </div>
+          <div class="hidden md:flex items-center space-x-4">
+            <span class="font-semibold text-sm tracking-tight px-3 py-2">Hola, {{ user.username }}</span>
+            <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit"
+                      class="px-3 py-2 rounded-md text-sm font-medium hover:bg-green-700 transition duration-300">
+                Cerrar
+                Sesión
+              </button>
+            </form>
           </div>
         </div>
-      </section>
-
-      <section id="seccion-enviar" class="hidden p-3 bg-gray-50">
-        <div class="flex gap-2 items-center">
-          <input id="texto" type="text" placeholder="Escribe un mensaje..."
-            class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-green-500" />
-          <button id="enviar" class="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </button>
+      </div>
+    </nav>
+    <div class="flex h-[calc(100vh-65px)]">
+      <div class="w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col">
+        <div class="p-3 bg-gray-50">
+          <h2 class="font-bold text-gray-700">Contactos</h2>
         </div>
-      </section>
+        <div id="contactos-container"
+             hx-get="{% url 'obtener_contactos' %}"
+             hx-trigger="load"
+             class="flex-1 overflow-y-auto">
+          <div class="text-center py-4">
+            <span class="animate-spin">⚙️</span> Cargando contactos...
+          </div>
+        </div>
+      </div>
+      <div class="hidden md:flex md:w-2/3 flex-col bg-gray-50">
+        <div id="cabecera-chat" class="p-3 bg-gray-50 border-b border-gray-200">
+          <h2 id="nombre-contacto" class="font-bold text-gray-700">Seleccione un contacto</h2>
+        </div>
+        <section id="mensajes" class="flex-1 overflow-y-auto p-4 bg-gray-100">
+          <div id="mensajes-container" class="space-y-2">
+            <div class="text-center py-8 text-gray-500">Seleccione un contacto para comenzar a chatear</div>
+          </div>
+        </section>
+        <section id="seccion-enviar" class="hidden p-3 bg-gray-50">
+          <div class="flex gap-2 items-center">
+            <input id="texto"
+                   type="text"
+                   placeholder="Escribe un mensaje..."
+                   class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-green-500" />
+            <button id="enviar"
+                    class="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                   width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round"
+                   stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </section>
+      </div>
     </div>
-  </div>
-
-  <script>
+    <script>
     const USUARIO_ACTUAL_ID = "{{ user.id }}";
     const USUARIO_ACTUAL_USERNAME = "{{ user.username }}";
-  </script>
-
-  <script src="{% static 'chats/js/main.js' %}"></script>
-</body>
-
+    </script>
+    <script src="{% static 'chats/js/main.js' %}"></script>
+  </body>
 </html>
