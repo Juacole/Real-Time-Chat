@@ -10,8 +10,8 @@
   <script src="https://unpkg.com/htmx.org@1.9.6"></script>
 </head>
 
-<body>
-  <nav class="bg-green-600 text-white shadow-lg">
+<body class="bg-gray-100">
+  <nav class="bg-green-600 text-white">
     <div class="container mx-auto px-4">
       <div class="flex justify-between items-center py-3">
         <div class="flex items-center">
@@ -19,7 +19,7 @@
         </div>
 
         <div class="hidden md:flex items-center space-x-4">
-          <span class="px-3 py-2">Hola, {{ user.username }}</span>
+          <span class="font-semibold text-sm tracking-tight px-3 py-2">Hola, {{ user.username }}</span>
           <form action="{% url 'logout' %}" method="post" style="display:inline;">
             {% csrf_token %}
             <button type="submit"
@@ -31,42 +31,45 @@
     </div>
   </nav>
 
-  <div class="bg-gray-200 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-5xl p-6">
-      <h1 class="text-3xl font-bold text-center mb-6 text-green-400">WhatsApp 2</h1>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <aside class="md:col-span-1 bg-white rounded-lg shadow p-4">
-          <h2 class="font-bold mb-3">Contactos</h2>
-          <div id="contactos-container" hx-get="{% url 'obtener_contactos' %}" hx-trigger="load">
-            <div class="text-center py-4">
-              <span class="animate-spin">⚙️</span> Cargando contactos...
-            </div>
-          </div>
-        </aside>
-
-        <main class="md:col-span-3 bg-white rounded-lg shadow p-4 flex flex-col h-[70vh]">
-          <div id="cabecera-chat" class="border-b pb-2 mb-2">
-            <h2 id="nombre-contacto" class="font-bold">Seleccione un contacto</h2>
-          </div>
-
-          <section id="mensajes"
-            class="flex-1 overflow-y-auto space-y-3 mb-4 border border-gray-200 rounded p-3 bg-gray-50">
-            <div id="mensajes-container">
-              <div class="text-center py-8 text-gray-500">
-                Seleccione un contacto para comenzar a chatear
-              </div>
-            </div>
-          </section>
-
-          <section id="seccion-enviar" class="flex gap-2 hidden">
-            <input id="texto" type="text" placeholder="Escribe un mensaje..."
-              class="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300" />
-            <button id="enviar" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-              Enviar
-            </button>
-          </section>
-        </main>
+  <div class="flex h-[calc(100vh-65px)]">
+    <div class="w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col">
+      <div class="p-3 bg-gray-50">
+        <h2 class="font-bold text-gray-700">Contactos</h2>
       </div>
+      <div id="contactos-container" hx-get="{% url 'obtener_contactos' %}" hx-trigger="load"
+        class="flex-1 overflow-y-auto">
+        <div class="text-center py-4">
+          <span class="animate-spin">⚙️</span> Cargando contactos...
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden md:flex md:w-2/3 flex-col bg-gray-50">
+      <div id="cabecera-chat" class="p-3 bg-gray-50 border-b border-gray-200">
+        <h2 id="nombre-contacto" class="font-bold text-gray-700">Seleccione un contacto</h2>
+      </div>
+
+      <section id="mensajes" class="flex-1 overflow-y-auto p-4 bg-gray-100">
+        <div id="mensajes-container" class="space-y-2">
+          <div class="text-center py-8 text-gray-500">
+            Seleccione un contacto para comenzar a chatear
+          </div>
+        </div>
+      </section>
+
+      <section id="seccion-enviar" class="hidden p-3 bg-gray-50">
+        <div class="flex gap-2 items-center">
+          <input id="texto" type="text" placeholder="Escribe un mensaje..."
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-green-500" />
+          <button id="enviar" class="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </section>
     </div>
   </div>
 
