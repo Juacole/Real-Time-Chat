@@ -1,0 +1,18 @@
+# Django (versión LTS estable)
+Django==4.2.13
+
+# Servidor ASGI para Django
+daphne==4.1.0
+
+# Conector para MySQL (reemplazo de psycopg2)
+mysqlclient==2.2.4  # Alternativa más estable para MySQL
+
+# Channels (versión estable compatible con Django 4.2)
+channels==4.0.0
+
+# Conector de Redis para Channels
+channels-redis==4.1.0
+
+# Dependencias adicionales recomendadas
+asgiref==3.8.1
+redis==5.0.1
