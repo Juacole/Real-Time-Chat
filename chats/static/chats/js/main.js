@@ -5,11 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const campoTexto = document.getElementById('texto');
     const botonEnviar = document.getElementById('enviar');
     const nombreContacto = document.getElementById('nombre-contacto');
+    const buscarContacto = document.getElementById('buscar-contacto');
 
     // Variables globales
-    let chatSocket = null;
-    let usuarioSeleccionadoId = null;
-    let usuarioSeleccionadoUsername = null;
+    var chatSocket = null;
+    var usuarioSeleccionadoId = null;
+    var usuarioSeleccionadoUsername = null;
 
     // Función para conectar al WebSocket
     function conectarWebSocket() {
@@ -121,6 +122,27 @@ document.addEventListener('DOMContentLoaded', function () {
         campoTexto.value = '';
     }
 
+    // Función para filtrar contactos
+    function filtrarContactos() {
+        const textoBusqueda = buscarContacto.value.toLowerCase();
+        const contactos = document.querySelectorAll('.contacto-btn');
+        let contactosVisibles = [];
+
+        contactos.forEach(contacto => {
+            const username = contacto.dataset.username.toLowerCase();
+            const contactoItem = contacto.closest('li');
+
+            if (username.includes(textoBusqueda)) {
+                contactoItem.style.display = '';
+                contactosVisibles.push(contacto);
+            } else {
+                contactoItem.style.display = 'none';
+            }
+        });
+
+        return contactosVisibles;
+    }
+
     // Event listeners
     document.addEventListener('click', function (event) {
         // Verificar si se hizo clic en un contacto o en sus hijos
@@ -133,6 +155,24 @@ document.addEventListener('DOMContentLoaded', function () {
     campoTexto.addEventListener('keyup', function (e) {
         if (e.key === 'Enter') {
             enviarMensaje();
+        }
+    });
+
+    // Evento para la búsqueda de contactos
+    buscarContacto.addEventListener('input', filtrarContactos);
+
+    // Evento para seleccionar contacto al presionar Enter en la búsqueda
+    buscarContacto.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            const contactosVisibles = filtrarContactos();
+            if (contactosVisibles.length > 0) {
+                // Simular clic en el primer contacto visible
+                contactosVisibles[0].click();
+                // Limpiar el campo de búsqueda después de seleccionar
+                buscarContacto.value = '';
+                // Mostrar todos los contactos nuevamente
+                filtrarContactos();
+            }
         }
     });
 });

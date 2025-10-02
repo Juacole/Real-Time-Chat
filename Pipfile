@@ -4,11 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-daphne = "*"
 psycopg2-binary = "*"
-channels = "*"
-channels-redis = "*"
+django = "==4.2.13"
+daphne = "==4.1.0"
+mysqlclient = "==2.2.4"
+channels = "==4.0.0"
+channels_redis = "==4.1.0"
+asgiref = "==3.8.1"
+redis = "==5.0.1"
 
 [dev-packages]
 
